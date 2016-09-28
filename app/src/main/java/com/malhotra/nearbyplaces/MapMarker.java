@@ -208,6 +208,7 @@ public class MapMarker extends FragmentActivity implements OnMapReadyCallback, G
 
 //zoom to current position:
         CameraPosition cameraPosition = new CameraPosition.Builder()
+
                 .target(latLng).zoom(13).build();
 
         //If you only need one location, unregister the listener

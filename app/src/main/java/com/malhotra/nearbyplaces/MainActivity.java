@@ -233,33 +233,35 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
                 ArrayList<Double> latlng = getLocationFromAddress(MainActivity.this,place);
                 latitude = latlng.get(0);
                 longitude = latlng.get(1);
-                type = "hospital|gas_station";
-                StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-                googlePlacesUrl.append("location=" + latitude + "," + longitude);
-                googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
-                googlePlacesUrl.append("&types=" + type);
-                googlePlacesUrl.append("&sensor=true");
-                googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
-                Log.e("url",googlePlacesUrl.toString());
-                GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
-                Object[] toPass = new Object[2];
-                toPass[0] = googleMap;
-                toPass[1] = googlePlacesUrl.toString();
-                googlePlacesReadTask.execute(toPass);
+                ArrayList <String> types;
+                types = new ArrayList<>();
+                types.add("hospital");
+                types.add("gas_station");
+                //type = "hospital|gas_station";
 
-
-                    /*try {
-                        db = openOrCreateDatabase("MapData.db", SQLiteDatabase.CREATE_IF_NECESSARY, null);
-                        db.execSQL(table_query.toString());
-                    } catch (Exception e) {
-                        Log.e("db", e.toString());
-                    }*/
+                for(int i = 0; i < 2; i++)
+                    getData(types.get(i));
 
                 startActivity(new Intent(this , MapMarker.class));
                 break;
         }
 
 
+    }
+
+    public void getData(String type) {
+        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlacesUrl.append("location=" + latitude + "," + longitude);
+        googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
+        googlePlacesUrl.append("&types=" + type);
+        googlePlacesUrl.append("&sensor=true");
+        googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
+        Log.e("url",googlePlacesUrl.toString());
+        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
+        Object[] toPass = new Object[2];
+        toPass[0] = googleMap;
+        toPass[1] = googlePlacesUrl.toString();
+        googlePlacesReadTask.execute(toPass);
     }
 
     public class GooglePlacesReadTask extends AsyncTask<Object, Integer, String> {
@@ -429,9 +431,4 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
             return googlePlaceMap;
         }
     }
-
-
-
-
-
 }
